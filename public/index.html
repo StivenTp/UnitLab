@@ -6,6 +6,7 @@
   <meta name="theme-color" content="#0f172e">
   <meta name="description" content="UnitLab: simulador universitario con registro, inicio de sesión, MongoDB y 451 preguntas para practicar.">
   <title>UnitLab · Simulador de exámenes</title>
+  <!-- UNITLAB-TEMA-VISIBLE-2026 -->
   <!-- Tema aplicado antes de pintar la página para evitar parpadeos. -->
   <script>
     (() => {
@@ -23,7 +24,7 @@
           const icon = button.querySelector('.theme-icon');
           const label = button.querySelector('.theme-label');
           if (icon) icon.textContent = dark ? '☀' : '☾';
-          if (label) label.textContent = dark ? 'Claro' : 'Oscuro';
+          if (label) label.textContent = dark ? 'Modo claro' : 'Modo oscuro';
         });
         const meta = document.querySelector('meta[name="theme-color"]');
         if (meta) meta.content = dark ? '#0c1325' : '#0f172e';
@@ -52,8 +53,9 @@
       <div class="auth-left-foot">UNITLAB · SIMULADOR DE EXÁMENES UNIVERSITARIOS</div>
     </div>
     <div class="auth-right">
-      <button type="button" class="theme-toggle theme-toggle-auth" data-theme-toggle aria-label="Cambiar tema" aria-pressed="false"><span class="theme-icon" aria-hidden="true">☾</span><span class="theme-label">Oscuro</span></button>
+      
       <div class="auth-box">
+        <div class="theme-switch-row"><span class="theme-switch-text">APARIENCIA</span><button type="button" class="theme-toggle theme-toggle-auth" data-theme-toggle aria-label="Activar modo oscuro" aria-pressed="false"><span class="theme-icon" aria-hidden="true">☾</span><span class="theme-label">Modo oscuro</span></button></div>
         <span class="auth-icon">✦</span>
         <h2 id="authTitle">¡Bienvenido de nuevo!</h2>
         <p id="authDescription">Inicia sesión para continuar practicando y guardar tus resultados.</p>
@@ -84,7 +86,7 @@
     </aside>
     <div class="backdrop" id="backdrop" hidden></div>
     <div class="content-shell">
-      <header class="topbar"><div class="topbar-start"><button class="mobile-menu" id="mobileMenu" type="button" aria-label="Abrir menú">☰</button><span class="breadcrumb">Mi escritorio <span>/</span> <b id="crumb">Inicio</b></span></div><div class="topbar-right"><button type="button" class="theme-toggle" data-theme-toggle aria-label="Cambiar tema" aria-pressed="false"><span class="theme-icon" aria-hidden="true">☾</span><span class="theme-label">Oscuro</span></button><span class="online-dot"></span> Sesión activa <span class="user-circle" id="userInitial">U</span><span class="user-name" id="currentUser">Usuario</span><button type="button" id="logoutButton" class="logout-button" title="Cerrar sesión">Salir</button></div></header>
+      <header class="topbar"><div class="topbar-start"><button class="mobile-menu" id="mobileMenu" type="button" aria-label="Abrir menú">☰</button><span class="breadcrumb">Mi escritorio <span>/</span> <b id="crumb">Inicio</b></span></div><div class="topbar-right"><button type="button" class="theme-toggle" data-theme-toggle aria-label="Cambiar tema" aria-pressed="false"><span class="theme-icon" aria-hidden="true">☾</span><span class="theme-label">Modo oscuro</span></button><span class="online-dot"></span> Sesión activa <span class="user-circle" id="userInitial">U</span><span class="user-name" id="currentUser">Usuario</span><button type="button" id="logoutButton" class="logout-button" title="Cerrar sesión">Salir</button></div></header>
       <main class="main">
         <section id="page-home" class="page active" aria-label="Inicio">
           <div class="hero"><div class="hero-copy"><span class="hero-brow">✦ TU CENTRO DE PREPARACIÓN</span><h1>Estudia mejor,<br><i>pregunta a pregunta.</i></h1><p>Prepárate con tus exámenes reales de universidad y preguntas PLUS creadas sobre los mismos temas.</p><button class="hero-btn" type="button" id="heroStart">Preparar cuestionario <span>↗</span></button></div><div class="hero-visual" aria-hidden="true"><div class="orbit one"></div><div class="orbit two"></div><div class="hero-square">?<span>✓ Respuesta correcta</span></div><b class="star-one">✦</b><b class="star-two">✧</b></div></div>
