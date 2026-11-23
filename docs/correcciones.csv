@@ -1,0 +1,31 @@
+﻿materia,unidad,pregunta,puntuacion_sima,marcada_sima,respuesta_final,resultado,observacion
+ARQUITECTURA DE SOFTWARE,1,1,0.0,b,No determinada,revisión,La actividad de mantenimiento también forma parte del ciclo de vida; todas las opciones pueden formar parte de desarrollar o mantener software.
+DISEÑO DE SITIOS WEB,1,1,0.0,c,c,discrepancia,"La etiqueta HTML para insertar una imagen es <img>; el 0,00 registrado en SIMA parece ser un error de corrección."
+DISEÑO DE SITIOS WEB,1,6,0.0,a,a,discrepancia,El atributo del elemento <input> que establece el tipo es type. La respuesta marcada es técnicamente correcta.
+PROGRAMACIÓN DISTRIBUIDA,1,2,0.0,c,No determinada,revisión,La velocidad típica depende del contexto histórico y del tipo de aplicación; el enunciado no proporciona la referencia que permita elegir un rango seguro.
+PROGRAMACIÓN DISTRIBUIDA,1,5,0.0,b,No determinada,revisión,Varias opciones describen desventajas posibles de sistemas distribuidos. La frase «mencionada en el texto» depende de una lectura no adjunta.
+TÓPICOS AVANZADOS DE SOFTWARE,1,4,0.0,c,d,corregida,El Daily Scrum inspecciona el progreso hacia el objetivo del Sprint y adapta el plan. «Revisar el progreso» es la opción más cercana.
+ARQUITECTURA DE SOFTWARE,2,7,0.0,a,No determinada,revisión,"ADD es diseño dirigido por atributos de calidad. La descomposición y los patrones pueden intervenir, pero no hay una opción que identifique su enfoque con precisión."
+DISEÑO DE SITIOS WEB,2,9,0.0,b,b,discrepancia,"Falta cerrar las comillas del atributo target: target=""_blank"". La opción «tiene error el código» es la correcta."
+INGENIERÍA ECONÓMICA,2,2,0.0,b,c,corregida,La tasa nominal anual no incorpora por sí sola el efecto compuesto del número de capitalizaciones en su expresión anual; la tasa efectiva sí lo refleja.
+PROGRAMACIÓN DISTRIBUIDA,2,6,0.0,a,No determinada,revisión,"Ricart–Agrawala emplea orden total mediante marcas temporales de Lamport; la opción habla de «orden casual», que no es esa propiedad."
+PROGRAMACIÓN DISTRIBUIDA,2,7,0.0,d,No determinada,revisión,Las cuatro opciones son falsas o mal redactadas con relación a las propiedades habituales de transacciones distribuidas.
+SEGURIDAD DE SOFTWARE,2,1,0.0,c,No determinada,revisión,"Las opciones c y d son descripciones generales parcialmente válidas, pero no distinguen todos los tipos de inyección y XSS con rigor."
+SEGURIDAD DE SOFTWARE,2,10,0.0,c,c,discrepancia,Una bind shell escucha conexiones entrantes; una reverse shell inicia la conexión hacia el atacante. La opción c estaba bien.
+TÓPICOS AVANZADOS DE SOFTWARE,2,1,0.0,a,No determinada,revisión,Un proceso es una instancia de programa en ejecución con recursos y espacio de direcciones. Ninguna opción expresa esa definición.
+TÓPICOS AVANZADOS DE SOFTWARE,2,3,0.0,d,No determinada,revisión,"Monitores, bloqueos y semáforos pueden controlar acceso a secciones críticas, de modo que el enunciado admite varias respuestas."
+TÓPICOS AVANZADOS DE SOFTWARE,2,6,0.0,c,a,corregida,Los semáforos pueden coordinar la espera y señalización hasta que el recurso esté disponible.
+TÓPICOS AVANZADOS DE SOFTWARE,2,8,0.0,d,a,corregida,Un bloqueo (lock o mutex) evita el acceso simultáneo a la sección crítica.
+INGENIERÍA ECONÓMICA,3,2,0.0,b,d,corregida,La incapacidad del equipo de cumplir nuevas especificaciones corresponde a requisitos alterados.
+PROGRAMACIÓN DISTRIBUIDA,3,3,1.0,c,No determinada,revisión,"En Node.js la solicitud entrante se representa mediante http.IncomingMessage, que no aparece entre las opciones; ServerRequest no es el tipo estándar."
+SEGURIDAD DE SOFTWARE,3,3,0.0,b,No determinada,revisión,"La falta de validación de entradas puede causar inyección SQL, XSS y otras vulnerabilidades; no se indica un comportamiento que permita diferenciarlas."
+TÓPICOS AVANZADOS DE SOFTWARE,3,7,0.0,d,No determinada,revisión,"Interpretación, procesamiento, selección de datos e implementación pueden ser desafíos. Sin contexto adicional no hay una respuesta única."
+ARQUITECTURA DE SOFTWARE,4,1,0.0,d,a,corregida,La participación de interesados ayuda a identificar riesgos e incumplimientos y a contrastar escenarios de calidad.
+ARQUITECTURA DE SOFTWARE,4,4,0.0,c,No determinada,revisión,La etapa «al final del proyecto» no permite elegir inequívocamente entre los métodos citados sin el texto de referencia.
+ARQUITECTURA DE SOFTWARE,4,6,0.0,b,c,corregida,"Los recorridos informales son un procedimiento habitual para revisar diseños; revisiones e inspecciones son también técnicas relacionadas, de ahí la redacción imprecisa."
+ARQUITECTURA DE SOFTWARE,4,8,0.0,d,a,corregida,Los recorridos informales del diseño permiten revisar decisiones con el equipo durante el diseño. También pueden ser útiles otras revisiones.
+ARQUITECTURA DE SOFTWARE,4,9,0.0,d,d,discrepancia,"ARID tiene dos fases generales, con nueve pasos en total, según el Software Engineering Institute; el 0,00 registrado discrepa de la fuente."
+PROGRAMACIÓN DISTRIBUIDA,4,4,0.0,d,a,corregida,El objetivo inicial del ejemplo de clon de Twitter se vincula a la autenticación de usuarios.
+PROGRAMACIÓN DISTRIBUIDA,4,5,0.0,b,No determinada,revisión,«Response» no es un objeto estándar de comunicación de Socket.IO; las opciones mezclan conceptos de Express y Socket.IO.
+PROGRAMACIÓN DISTRIBUIDA,4,8,0.0,d,c,corregida,El servidor Socket.IO (Server) gestiona las conexiones entrantes; cada Socket representa una conexión individual.
+SEGURIDAD DE SOFTWARE,4,2,0.0,c,c,discrepancia,"Skipfish usa crawling, pruebas con diccionarios y fuzzing. La opción c describe una técnica real, aunque la opción a también puede defenderse."

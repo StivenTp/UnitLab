@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0f172e">
+  <meta name="description" content="UnitLab: simulador universitario con registro, inicio de sesión, MongoDB y 451 preguntas para practicar.">
+  <title>UnitLab · Simulador de exámenes</title>
+  <!-- Tema aplicado antes de pintar la página para evitar parpadeos. -->
+  <script>
+    (() => {
+      const KEY = 'unitlab-theme';
+      const pref = (() => { try { return localStorage.getItem(KEY); } catch (_) { return null; } })();
+      const systemDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const initial = pref === 'dark' || pref === 'light' ? pref : (systemDark ? 'dark' : 'light');
+      document.documentElement.dataset.theme = initial;
+      function updateButtons() {
+        const dark = document.documentElement.dataset.theme === 'dark';
+        document.querySelectorAll('[data-theme-toggle]').forEach(button => {
+          button.setAttribute('aria-label', dark ? 'Activar modo claro' : 'Activar modo oscuro');
+          button.setAttribute('aria-pressed', String(dark));
+          button.title = dark ? 'Activar modo claro' : 'Activar modo oscuro';
+          const icon = button.querySelector('.theme-icon');
+          const label = button.querySelector('.theme-label');
+          if (icon) icon.textContent = dark ? '☀' : '☾';
+          if (label) label.textContent = dark ? 'Claro' : 'Oscuro';
+        });
+        const meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.content = dark ? '#0c1325' : '#0f172e';
+      }
+      document.addEventListener('DOMContentLoaded', () => {
+        updateButtons();
+        document.querySelectorAll('[data-theme-toggle]').forEach(button => {
+          button.addEventListener('click', () => {
+            const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+            document.documentElement.dataset.theme = next;
+            try { localStorage.setItem(KEY, next); } catch (_) { /* navegación privada */ }
+            updateButtons();
+          });
+        });
+      });
+    })();
+  </script>
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <section class="auth-screen" id="authScreen">
+    <div class="auth-left">
+      <div class="auth-brand"><span class="auth-brand-icon">U<span>✦</span></span><span>UnitLab<small>Tu espacio de estudio</small></span></div>
+      <div class="auth-intro"><span class="auth-eyebrow">ESTUDIA CON PROPÓSITO</span><h1>Tu mejor versión empieza <em>con una pregunta.</em></h1><p>Prepárate con los exámenes de tus materias, cuestionarios PLUS y seguimiento de tu progreso en cualquier dispositivo.</p><div class="auth-badges"><span>✦ 451 preguntas</span><span>✧ 6 materias</span><span>◉ Tu progreso en la nube</span></div></div>
+      <div class="auth-left-foot">UNITLAB · SIMULADOR DE EXÁMENES UNIVERSITARIOS</div>
+    </div>
+    <div class="auth-right">
+      <button type="button" class="theme-toggle theme-toggle-auth" data-theme-toggle aria-label="Cambiar tema" aria-pressed="false"><span class="theme-icon" aria-hidden="true">☾</span><span class="theme-label">Oscuro</span></button>
+      <div class="auth-box">
+        <span class="auth-icon">✦</span>
+        <h2 id="authTitle">¡Bienvenido de nuevo!</h2>
+        <p id="authDescription">Inicia sesión para continuar practicando y guardar tus resultados.</p>
+        <div class="auth-tabs" role="tablist" aria-label="Acceso a UnitLab"><button type="button" class="active" id="loginTab" role="tab" aria-selected="true">Iniciar sesión</button><button type="button" id="registerTab" role="tab" aria-selected="false">Crear cuenta</button></div>
+        <form id="authForm" autocomplete="on">
+          <label class="auth-field" id="authNameField" hidden><span>Nombre completo</span><input type="text" id="authName" name="name" autocomplete="name" maxlength="80" placeholder="Tu nombre"></label>
+          <label class="auth-field"><span>Correo electrónico</span><input type="email" id="authEmail" name="email" autocomplete="email" required maxlength="180" placeholder="correo@ejemplo.com"></label>
+          <label class="auth-field"><span>Contraseña</span><input type="password" id="authPassword" name="password" autocomplete="current-password" required minlength="8" placeholder="Mínimo 8 caracteres"></label>
+          <p class="auth-alert" id="authError" role="alert" hidden></p>
+          <button type="submit" class="auth-submit" id="authSubmit">Entrar a UnitLab <span>↗</span></button>
+        </form>
+        <p class="auth-tip">Tus contraseñas se protegen en el servidor y tus resultados se guardan en MongoDB.</p>
+      </div>
+    </div>
+  </section>
+  <div class="app" id="application" hidden>
+    <aside class="sidebar" id="sidebar">
+      <div class="brand"><span class="brand-icon">U<span>✦</span></span><span><strong>UnitLab</strong><small>Tu espacio de estudio</small></span></div>
+      <div class="side-label">ESPACIO DE ESTUDIO</div>
+      <nav class="nav" aria-label="Navegación principal">
+        <button class="nav-link active" type="button" data-nav="home"><span class="nav-icon">⌂</span> Inicio</button>
+        <button class="nav-link" type="button" data-nav="bank"><span class="nav-icon">▤</span> Banco de preguntas</button>
+        <button class="nav-link" type="button" data-nav="history"><span class="nav-icon">◷</span> Mis resultados</button>
+      </nav>
+      <div class="side-spacer"></div>
+      <div class="side-callout"><span class="callout-star">✧</span><b>Practica con confianza</b><p>Preguntas originales y nuevas, organizadas por materia y unidad.</p></div>
+      <div class="side-bottom">Unidad por unidad, a tu ritmo.</div>
+    </aside>
+    <div class="backdrop" id="backdrop" hidden></div>
+    <div class="content-shell">
+      <header class="topbar"><div class="topbar-start"><button class="mobile-menu" id="mobileMenu" type="button" aria-label="Abrir menú">☰</button><span class="breadcrumb">Mi escritorio <span>/</span> <b id="crumb">Inicio</b></span></div><div class="topbar-right"><button type="button" class="theme-toggle" data-theme-toggle aria-label="Cambiar tema" aria-pressed="false"><span class="theme-icon" aria-hidden="true">☾</span><span class="theme-label">Oscuro</span></button><span class="online-dot"></span> Sesión activa <span class="user-circle" id="userInitial">U</span><span class="user-name" id="currentUser">Usuario</span><button type="button" id="logoutButton" class="logout-button" title="Cerrar sesión">Salir</button></div></header>
+      <main class="main">
+        <section id="page-home" class="page active" aria-label="Inicio">
+          <div class="hero"><div class="hero-copy"><span class="hero-brow">✦ TU CENTRO DE PREPARACIÓN</span><h1>Estudia mejor,<br><i>pregunta a pregunta.</i></h1><p>Prepárate con tus exámenes reales de universidad y preguntas PLUS creadas sobre los mismos temas.</p><button class="hero-btn" type="button" id="heroStart">Preparar cuestionario <span>↗</span></button></div><div class="hero-visual" aria-hidden="true"><div class="orbit one"></div><div class="orbit two"></div><div class="hero-square">?<span>✓ Respuesta correcta</span></div><b class="star-one">✦</b><b class="star-two">✧</b></div></div>
+          <div class="stats">
+            <div class="stat"><span class="stat-ico lilac">▤</span><div><strong id="stat-total">451</strong><small>Preguntas en el banco</small></div></div>
+            <div class="stat"><span class="stat-ico teal">✧</span><div><strong id="stat-exams">221</strong><small>De exámenes originales</small></div></div>
+            <div class="stat"><span class="stat-ico gold">✦</span><div><strong id="stat-plus">230</strong><small>Preguntas PLUS</small></div></div>
+            <div class="stat"><span class="stat-ico sky">◉</span><div><strong id="stat-score">—</strong><small>Tu promedio de aciertos</small></div></div>
+          </div>
+          <div class="main-head"><div><div class="eyebrow">PERSONALIZA TU PRÁCTICA</div><h2>Crea un nuevo cuestionario</h2><p>Escoge qué estudiar. En cada intento se mezclan las preguntas.</p></div><span class="head-symbol">✎</span></div>
+          <section class="setup" id="setup">
+            <div class="form-grid">
+              <label class="field"><span>Materia</span><select id="subjectSelect"><option value="all">Todas las materias</option></select></label>
+              <label class="field"><span>Unidad</span><select id="unitSelect"><option value="all">Todas las unidades</option></select></label>
+              <label class="field"><span>Tipo de preguntas</span><select id="originSelect"><option value="all">Originales + PLUS</option><option value="exam">Solo exámenes originales</option><option value="plus">Solo preguntas PLUS</option></select></label>
+              <label class="field"><span>Cantidad de preguntas</span><input id="countInput" type="number" min="1" max="451" value="20"></label>
+            </div>
+            <div class="setup-row"><div class="mode-info"><b>Modo de estudio</b><span>Elige cuándo ver las respuestas.</span></div><div class="segmented" role="radiogroup" aria-label="Modo de estudio"><label><input type="radio" name="mode" value="practice" checked><span>Práctica</span></label><label><input type="radio" name="mode" value="exam"><span>Examen</span></label></div></div>
+            <div class="setup-row last"><div class="checks"><label><input type="checkbox" id="shuffleOptions" checked> Mezclar opciones de respuesta</label><label><input type="checkbox" id="onlyWrong"> Solo preguntas falladas antes</label></div><button id="start" class="btn primary" type="button">Generar examen aleatorio <span>↗</span></button></div>
+            <div id="poolNotice" class="pool-notice" aria-live="polite">Calculando preguntas disponibles...</div>
+          </section>
+          <div class="subject-head"><div><div class="eyebrow">EXPLORA TUS MATERIAS</div><h2>¿Qué quieres repasar hoy?</h2></div><span id="subjectCount" class="soft-pill"></span></div>
+          <div class="subject-grid" id="subjectGrid"></div>
+          <div class="editorial-note"><span class="note-icon">!</span><div><b>Revisión de preguntas originales</b><p><span id="reviewCountText">14</span> preguntas del material recibido tienen respuestas ausentes o ambiguas. Puedes consultarlas en el banco con el filtro «En revisión»; para que no aprendas una clave dudosa, no se usan para calcular la nota.</p></div><button type="button" id="seeReviews" class="note-link">Revisarlas ↗</button></div>
+        </section>
+        <section id="page-quiz" class="page" aria-label="Examen en curso">
+          <div class="inner-top"><button class="back-link" id="exitQuiz" type="button">← Salir del examen</button><span class="soft-pill" id="quizMode"></span></div>
+          <div class="quiz-title"><div><div class="eyebrow" id="quizSubject">MATERIA</div><h1 id="progressText">Pregunta 1 de 20</h1></div><div class="progress-right"><b id="answeredText">0 respondidas</b><small>Responde a tu ritmo</small></div></div>
+          <div class="progress-bg"><div class="progress-bar" id="progressBar"></div></div>
+          <div class="quiz-card"><div class="question-top"><div class="meta-tags" id="quizTags"></div><span id="questionNum" class="qnum">01 / 20</span></div><h2 id="questionText"></h2><p class="quiz-hint">Selecciona la respuesta que consideres correcta:</p><div id="options" class="options"></div><div class="feedback" id="feedback" hidden></div></div>
+          <div class="quiz-bottom"><button class="btn outline" id="prev" type="button">← Anterior</button><div id="dots" class="dots" aria-label="Progreso de respuestas"></div><button class="btn primary" id="next" type="button">Siguiente →</button></div>
+        </section>
+        <section id="page-result" class="page" aria-label="Resultados del examen">
+          <button class="back-link" id="resultBack" type="button">← Volver al inicio</button>
+          <div class="result-hero"><span class="result-emblem">✦</span><div class="eyebrow">CUESTIONARIO COMPLETADO</div><h1>¡Así te fue en tu práctica!</h1><div class="score" id="finalScore">0,0 <span>/ 5,0</span></div><p id="resultInfo"></p><div class="result-metrics"><div><b id="correctMetric">0</b><small>Correctas</small></div><div><b id="wrongMetric">0</b><small>Incorrectas</small></div><div><b id="percentMetric">0%</b><small>Aciertos</small></div></div><div class="result-buttons"><button type="button" class="btn primary" id="retryWrong">Repasar las que fallé ↗</button><button type="button" class="btn outline" id="resultNew">Otro examen</button></div></div>
+          <div class="review-head"><div><div class="eyebrow">APRENDE DE TUS ERRORES</div><h2>Revisión de tus respuestas</h2><p>Revisa tu elección y la opción correcta, con su materia, unidad y origen.</p></div><div class="review-switch"><button class="switch-choice active" data-review="wrong">Solo errores</button><button class="switch-choice" data-review="all">Todas</button></div></div><div id="reviewList" class="review-list"></div>
+        </section>
+        <section id="page-bank" class="page" aria-label="Banco de preguntas">
+          <div class="page-heading"><div><div class="eyebrow">TU MATERIAL DE ESTUDIO</div><h1>Banco de preguntas</h1><p>Consulta las preguntas originales, sus unidades y las preguntas PLUS adicionales.</p></div><button class="btn outline" id="exportBank" type="button">↓ Exportar JSON</button></div>
+          <div class="bank-overview"><div><strong id="bankTotal">451</strong><span>En el banco</span></div><div><strong id="bankReady">437</strong><span>Calificables</span></div><div><strong id="bankReview">14</strong><span>En revisión</span></div></div>
+          <div class="bank-filter"><label class="field"><span>Buscar texto</span><input id="bankSearch" type="search" placeholder="Pregunta, tema o respuesta..."></label><label class="field"><span>Materia</span><select id="bankSubject"><option value="all">Todas</option></select></label><label class="field"><span>Unidad</span><select id="bankUnit"><option value="all">Todas</option></select></label><label class="field"><span>Origen y estado</span><select id="bankOrigin"><option value="all">Todas las preguntas</option><option value="exam">Solo originales</option><option value="plus">Solo PLUS</option><option value="review">En revisión</option><option value="discrepancy">Discrepancias de SIMA</option></select></label></div>
+          <div class="bank-meta"><span id="bankResultCount">0 resultados</span><span>Las preguntas PLUS fueron creadas para estudiar estos temas.</span></div><div class="bank-list" id="bankList"></div><div class="pagination" id="pagination"></div>
+        </section>
+        <section id="page-history" class="page" aria-label="Historial de prácticas">
+          <div class="page-heading"><div><div class="eyebrow">TU PROGRESO</div><h1>Mis resultados</h1><p>Tus intentos se guardan en MongoDB y estarán disponibles al iniciar sesión en otro dispositivo.</p></div><button type="button" class="btn outline" id="clearHistory">Limpiar historial</button></div>
+          <div class="history-list" id="historyList"></div>
+        </section>
+        <footer class="footer">UNITLAB · Simulador de estudio · 23 evaluaciones reales y 230 preguntas PLUS · Tu progreso se guarda de forma segura en MongoDB.</footer>
+      </main>
+    </div>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
